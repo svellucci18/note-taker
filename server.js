@@ -1,40 +1,28 @@
+// import routes
+const apiRoutes = require('./routes/apiroutes')
+const htmlRoutes = require('./routes/htmlroutes')
+
+// require express-js library for creating routes and includes the methods such as get, post etc
 const express = require('express');
 
+// defining express as app to simplify the code.
 const app = express();
-const PORT = 3001;
 
+// Set up the port as default 
+const PORT = 3001; // will update for deployed app for heroku
+
+// Location of static front-end files are in the public folder
 app.use(express.static('public'));
 
-// Define what happens when /notes is added to the path http://localhost:3001/notes.html worked
-app.get('/note', (req,res) => {
+// Methods to allow us to get information and parse it for easy manipulation
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
-    // send the file notes.html review activity 7
-    res.sendFile();
+// Enables the route path to look in the api and html routes
+app.use('/api', apiRoutes)
+app.use('/', htmlRoutes)
 
-})
-
-// Add a new request route for creating a new note MATCH THE REQUEST METHOD to configure the matching route
-app.get('/api/notes', (req,res) => { //the string is from the end of the url
-
-    // send the json data, once this is finished we should see the test note from the db
-    res.json( /* send note data */);
-    
-});
-
-// Post to persist data aka save to db.json
-app.post('/api/notes', (req,res) => { //the string is from the end of the url
-
-    // create persisting data
-
-    // Access the new note data from `req`
-
-    // Push that new note to my existing list of notes
-
-    // Write my updated notes list to the `db.json` file
-    
-});
-
-
+// Start listening on Port number we assign it to
 app.listen(PORT, () =>
   console.log(`Example app listening at http://localhost:${PORT}`)
 );
