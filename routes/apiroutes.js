@@ -1,6 +1,9 @@
 // require express-js library for creating routes and includes the methods such as get, post etc
 const express = require('express');
 
+// require crud.js
+const crud = require('../db/crud');
+
 // defining express as app to simplify the code.
 const app = express();
 
