@@ -9,7 +9,7 @@ const express = require('express');
 const app = express();
 
 // Set up the port as default 
-const PORT = 3001; // will update for deployed app for heroku
+const PORT = process.env.POT || 3001; // will update for deployed app for heroku
 
 // Location of static front-end files are in the public folder
 app.use(express.static('public'));
