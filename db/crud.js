@@ -1,7 +1,7 @@
 // Require packages
 const util = require('util');
 const fs = require('fs');
-const uuid = require('uuid'); // might need to include the version number
+const { v4: uuidv4 } = require('uuid'); // might need to include the version number
 
 // Enables reading and writing methods and ability to set which file you are reading/writing to.
 const readFileAsync = util.promisify(fs.readFile);
@@ -12,23 +12,23 @@ const writeFileAsync = util.promisify(fs.writeFile);
 class crud {
 
     read() {
-        // write functionality
+        // write functionality GET
     }
 
     write() {
-        // write functionality
+        // write functionality POST
     }
 
     getNotes() {
-        // write functionality
+        // write functionality parse
     }
 
     addNotes() {
-        // write functionality
+        // write functionality stringify
     }
 
     deleteNotes() {
-        // write functionality
+        // write functionality DELETE
     }
 
 };

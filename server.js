@@ -11,16 +11,17 @@ const app = express();
 // Set up the port as default 
 const PORT = process.env.PORT || 3001; // will update for deployed app for heroku
 
-// Location of static front-end files are in the public folder
-app.use(express.static('public'));
-
-// Methods to allow us to get information and parse it for easy manipulation
+// Middleware: methods to allow us to get information and parse it for easy manipulation
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+// Location of static front-end files are in the public folder
+app.use(express.static('public'));
+
 // Enables the route path to look in the api and html routes
-app.use('/api', apiRoutes)
-app.use('/', htmlRoutes)
+app.use('/api', apiRoutes);
+app.use('/', htmlRoutes);
+
 
 // Start listening on Port number we assign it to
 app.listen(PORT, () =>
