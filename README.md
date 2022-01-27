@@ -8,7 +8,6 @@ Enables small business oweners to write and save notes to organize their thought
 ## Table of Contents
 * [Installation](#installation)
 * [Usage](#usage)
-
 * [License](#license)
 * [Contributing](#contributing)
 * [Tests](#tests)

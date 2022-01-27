@@ -23,13 +23,61 @@ router.get('/notes', (req,res) => { //the string is from the end of the url
 router.post('/notes', (req,res) => { //the string is from the end of the url
 
     // Access the note data that was sent
-    const newNote = req.body;
+    // Destructuring assignment for the items in req.body
+    const { title, text } = req.body;
+
+    // Log that a POST request was received
+    console.info(`${req.method} request received to add a note`);
 
     // create persisting data
-
     // Access the new note data from `req`
-
     // Push that new note to my existing list of notes
+
+
+    // If all the required properties are present
+    if ( title && text ) {
+    // Variable for the object we will save
+        const newNote = {
+        title,
+        text,
+        id: uuid(),
+        };
+
+        // Convert the data to a string so we can save it
+        const noteString = JSON.stringify(currentNotes, null, 2);
+
+        // appending the new note to the existing file
+        currentNotes.push(newNote);
+
+        // Read the string to a file
+        fs.readFile(`../db/db.json`, 'utf-8', (err, data) =>
+        err
+            ? console.error(err)
+            : console.log(
+                `note for ${newNote.title} has been written to JSON file`
+            )
+        );
+
+        // Write the string to a file
+        fs.writeFile(`../db/db.json`, noteString, (err) =>
+        err
+            ? console.error(err)
+            : console.log(
+                `note for ${newNote.title} has been written to JSON file`
+            )
+        );
+
+        const response = {
+        status: 'success',
+        body: newNote,
+        };
+
+        console.log(response);
+        res.status(201).json(response);
+    } else {
+        res.status(500).json('Error in posting note');
+    }
+
 
     // Write my updated notes list to the `db.json` file
     res.json('something in response'); // way to look into response in inspector -- not working
