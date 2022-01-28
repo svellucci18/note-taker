@@ -1,18 +1,28 @@
 // require express-js library for creating routes and includes the methods such as get, post etc
 const express = require('express');
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const util = require('util');
 const { redirect } = require('express/lib/response');
 
+// Enables reading and writing methods and ability to set which file you are reading/writing to.
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
+
 // require crud.js
-const crud = require('../db/crud');
+// const crud = require('../db/crud');
 
 // defining express as app to simplify the code.
 const router = express();
 
 // declaring the db so it knows where to save
-const currentNotes = require('../db/db.json');
+var currentNotes = require('../db/db.json');
 
 // Add a new request route for creating a new note MATCH THE REQUEST METHOD to configure the matching route
 router.get('/notes', (req,res) => { //the string is from the end of the url
+
+    // MISSING CODE
+
 
     // send the json data, once this is finished we should see the test note from the db
     res.json(currentNotes);
@@ -29,59 +39,76 @@ router.post('/notes', (req,res) => { //the string is from the end of the url
     // Log that a POST request was received
     console.info(`${req.method} request received to add a note`);
 
-    // create persisting data
-    // Access the new note data from `req`
-    // Push that new note to my existing list of notes
-
-
     // If all the required properties are present
     if ( title && text ) {
     // Variable for the object we will save
         const newNote = {
         title,
         text,
-        id: uuid(),
+        id: uuidv4(),
         };
 
         // Convert the data to a string so we can save it
-        const noteString = JSON.stringify(currentNotes, null, 2);
+        // const noteString = JSON.stringify(currentNotes, null, 2);
 
         // appending the new note to the existing file
         currentNotes.push(newNote);
 
         // Read the string to a file
-        fs.readFile(`../db/db.json`, 'utf-8', (err, data) =>
-        err
-            ? console.error(err)
-            : console.log(
-                `note for ${newNote.title} has been written to JSON file`
-            )
-        );
+        readFileAsync(`db/db.json`, 'utf-8' )
+            .then((notes) => {
+                console.log("help", notes)
+                let parsedNotes;
+                try{
+                    parsedNotes = [].concat(JSON.parse(notes)); // parsing it so it becomes an array
+                }
+                catch(err) {
+                    parsedNotes = []; // if db.json is empty set it to empty
+                }
 
-        // Write the string to a file
-        fs.writeFile(`../db/db.json`, noteString, (err) =>
-        err
-            ? console.error(err)
-            : console.log(
-                `note for ${newNote.title} has been written to JSON file`
-            )
-        );
+                parsedNotes.push(newNote);
 
-        const response = {
-        status: 'success',
-        body: newNote,
-        };
+                // Write the string to a file
+                writeFileAsync(`db/db.json`, JSON.stringify(parsedNotes, null, 2));
 
-        console.log(response);
-        res.status(201).json(response);
+                const response = {
+                status: 'success',
+                body: newNote,
+                };
+
+                console.log(response);
+                res.status(201).json(response);
+            });
+
     } else {
         res.status(500).json('Error in posting note');
     }
 
-
-    // Write my updated notes list to the `db.json` file
-    res.json('something in response'); // way to look into response in inspector -- not working
     
+});
+
+router.delete('/notes/:id', (req,res) => {
+    
+    readFileAsync(`db/db.json`, 'utf-8' )
+            .then((notes) => {
+                console.log("help", notes)
+                let parsedNotes;
+                try{
+                    parsedNotes = [].concat(JSON.parse(notes)); // parsing it so it becomes an array
+                }
+                catch(err) {
+                    parsedNotes = []; // if db.json is empty set it to empty
+                }
+
+                var id = req.params.id; //this is the id that we need to delete
+                
+                var newNotes = parsedNotes.filter((note) => note.id !== id); 
+
+                currentNotes = newNotes;
+
+                // Write the string to a file
+                writeFileAsync(`db/db.json`, JSON.stringify(newNotes, null, 2));
+            });
 });
 
 

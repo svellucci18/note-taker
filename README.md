@@ -10,7 +10,6 @@ Enables small business oweners to write and save notes to organize their thought
 * [Usage](#usage)
 * [License](#license)
 * [Contributing](#contributing)
-* [Tests](#tests)
 * [Questions](#questions)
 
 ## Installation
@@ -24,9 +23,6 @@ This application is covered under the MIT license.
 
 ## Contributing
 Reach out if you're interested in collaborating.
-
-## Tests
-In order to run tests, type npm test to command line.
 
 ## Questions
 Contact me svellucci18@gmail.com
