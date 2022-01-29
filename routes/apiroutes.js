@@ -21,8 +21,12 @@ var currentNotes = require('../db/db.json');
 // Add a new request route for creating a new note MATCH THE REQUEST METHOD to configure the matching route
 router.get('/notes', (req,res) => { //the string is from the end of the url
 
-    // MISSING CODE
 
+    // // Send a message to the client
+    // res.json(`${req.method} request received to get notes`);
+
+    // // Log our request to the terminal
+    // console.info(`${req.method} request received to get notes`);
 
     // send the json data, once this is finished we should see the test note from the db
     res.json(currentNotes);
